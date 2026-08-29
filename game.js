@@ -1,3 +1,7 @@
+/* =========================================================
+   ECI.EXE — o jogo
+   Mascote oficial da Atlética de Engenharia de Computação
+   ========================================================= */
 
 (function(){
 "use strict";
@@ -880,7 +884,9 @@ function playerTakeHit(){
   }
 }
 
-
+/* ---------------------------------------------------------
+   Update principal
+--------------------------------------------------------- */
 function update(dt){
   elapsed += dt;
 
@@ -1098,7 +1104,7 @@ function update(dt){
 }
 
 /* ---------------------------------------------------------
-   Perguntas 
+   Perguntas (IA que "aprende" com o jogador)
 --------------------------------------------------------- */
 function triggerQuestion(){
   let idx;
@@ -1133,7 +1139,7 @@ function answerQuestion(key,val){
 }
 
 /* ---------------------------------------------------------
-   CAPTCHA falso — easter egg. Sempre quebra de propósito.
+   CAPTCHA falso — easter egg. Sempre "quebra" de propósito.
    Tem um timeout de segurança: se o jogador ignorar, ele
    "resolve sozinho" (glitchando) pra nunca travar a partida.
 --------------------------------------------------------- */

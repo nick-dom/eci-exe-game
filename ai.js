@@ -412,7 +412,7 @@ window.ECI = {
     const real = await askRaw(prompt, 50);
     return real || localLine(LOCAL_PHASE_TPL, fact || phaseName, rng);
   },
-  /* resposta no modo conversa (multi-turno simples)*/
+  /* resposta no modo conversa (multi-turno simples) — também entende codewords */
   async chatLine(userText, profile, rng){
     memory.chatCount = (memory.chatCount||0) + 1;
     memory.chatLog = (memory.chatLog||[]).concat([{u:userText}]).slice(-12);
