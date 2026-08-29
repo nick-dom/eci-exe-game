@@ -81,6 +81,27 @@
         <button id="btnRename" class="secondary small">SALVAR</button>
       </div>
     </div>
+
+    <!-- CHEFÕES SECRETOS -->
+    <details class="menuBox foldBox" id="secretBossBox">
+      <summary>CHEFÕES SECRETOS <span id="secretBossCount">(0/6)</span></summary>
+      <p class="hintText">encontre a codeword no fim de cada fase (ou no fim da partida) e digite ela em CONVERSAR pra desbloquear.</p>
+      <div id="secretBossList" class="secretBossList"></div>
+    </details>
+
+    <!-- CONFIGURAÇÃO DE IA -->
+    <details class="menuBox foldBox" id="aiConfigBox">
+      <summary>CONFIGURAR IA <span id="aiConfigStatus">(LOCAL)</span></summary>
+      <p class="hintText">sem nada configurado, o jogo usa só falas locais (nunca depende de internet). opcionalmente, plugue uma IA de verdade:</p>
+      <label class="cbLabel"><input type="radio" name="aiMode" value="local" id="aiModeLocal"> só local (padrão)</label>
+      <label class="cbLabel"><input type="radio" name="aiMode" value="claude" id="aiModeClaude"> Claude (cole sua própria chave)</label>
+      <input type="text" id="aiKeyInput" placeholder="sk-ant-... (fica só no seu navegador)">
+      <label class="cbLabel"><input type="radio" name="aiMode" value="custom" id="aiModeCustom"> endpoint próprio (ex: gpt-oss via Ollama)</label>
+      <input type="text" id="aiEndpointInput" placeholder="http://localhost:11434/v1/chat/completions">
+      <input type="text" id="aiModelInput" placeholder="gpt-oss:20b">
+      <button id="btnAiSave" class="secondary small">SALVAR IA</button>
+    </details>
+
     <div class="seedTag" id="seedTagMenu"></div>
   </div>
 
