@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ECI.EXE — o jogo</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="wrap">
+
+  <canvas id="game" width="960" height="600"></canvas>
+  <div id="scanlines"></div>
+  <div id="vignette"></div>
+  <div id="shakeLayer"></div>
+
+  <!-- HUD -->
+  <div id="hud" class="hidden">
+    <div id="hudTop">
+      <div class="panel">
+        <div class="row"><span id="phaseName">FASE 1 — BUG</span></div>
+        <div class="label">INTELIGÊNCIA</div>
+        <div class="bar"><div id="barInt"></div></div>
+        <div class="label">CAOS</div>
+        <div class="bar"><div id="barCaos"></div></div>
+      </div>
+      <div class="panel" id="titleTag">ECI<span>.</span>EXE</div>
+      <div class="panel right">
+        <div class="row"><span>SCORE</span><span id="hScore">0</span></div>
+        <div class="row"><span>TEMPO</span><span id="hTime">00:00</span></div>
+        <div class="row"><span>CORE</span><span id="hCore">STABLE</span></div>
+        <div class="row"><span>IA</span><span id="aiStatus">LOCAL</span></div>
+      </div>
+    </div>
+
+    <div id="hudBottom">
+      <div class="panel" id="hitsPanel">
+        <div class="label">INTEGRIDADE</div>
+        <div id="hitsRow"></div>
+      </div>
+      <div class="panel" id="ultPanel">
+        <div class="label">KERNEL PANIC</div>
+        <div class="bar ult"><div id="barUlt"></div></div>
+      </div>
+      <div class="panel" id="powersPanel">
+        <div class="power" id="pow-dash"><span class="k">ESPAÇO</span><span class="n">GLITCH</span><div class="cd"></div></div>
+        <div class="power locked" id="pow-seg"><span class="k">Q</span><span class="n">SEGFAULT</span><div class="cd"></div></div>
+        <div class="power locked" id="pow-rec"><span class="k">E</span><span class="n">RECURSION</span><div class="cd"></div></div>
+        <div class="power locked" id="pow-loop"><span class="k">R</span><span class="n">LOOP</span><div class="cd"></div></div>
+        <div class="power locked" id="pow-panic"><span class="k">F</span><span class="n">PANIC</span><div class="cd"></div></div>
+        <div class="power" id="pow-exploit"><span class="k">X</span><span class="n">EXPLOIT</span><div class="cd"></div></div>
+      </div>
+    </div>
+    <div id="seedTagHud"></div>
+  </div>
+
+  <!-- MENU -->
+  <div id="menu" class="screen">
+    <img src="assets/hero-portrait.png" id="heroArt" alt="ECI.EXE">
+    <h1 id="menuTitle">ECI<span>.</span>EXE</h1>
+    <p class="tagline">um erro que virou consciência.</p>
+    <p class="memLine hidden" id="memLine"></p>
+    <div class="menuBox">
+      <p><b>MISSÃO:</b> colete bugs, evolua através das 4 fases e sobreviva ao boss final DEBUG.EXE//ROOT.</p>
+      <p><b>MOVER</b> — setas / WASD</p>
+      <p><b>ESPAÇO</b> — GLITCH (dash + invulnerável)</p>
+      <p><b>Q · E · R</b> — poderes desbloqueados por fase</p>
+      <p><b>X</b> — EXPLOIT (ataque, dano em inimigos e no boss)</p>
+      <p><b>F</b> — KERNEL PANIC (ultimate, carregue o medidor)</p>
+      <p class="warn">⚠ o sistema é instável. ele pode travar sozinho.</p>
+    </div>
+    <div class="menuRow">
+      <button id="btnStart">RUN eci.exe</button>
+      <button id="btnChat" class="secondary">CONVERSAR</button>
+    </div>
+    <div class="menuOpts">
+      <label class="cbLabel"><input type="checkbox" id="cbColorblind"> modo daltônico (cores alternativas)</label>
+      <div class="renameRow">
+        <input type="text" id="renameInput" maxlength="18" placeholder="renomear ECI.EXE">
+        <button id="btnRename" class="secondary small">SALVAR</button>
+      </div>
+    </div>
+    <div class="seedTag" id="seedTagMenu"></div>
+  </div>
+
+  <!-- MODO CONVERSA -->
+  <div id="chatModal" class="screen hidden">
+    <div class="dialogBox chatBox">
+      <div class="dialogTitleBar"><span id="chatTitle">CONVERSA — ECI.EXE</span><span class="blink">●</span></div>
+      <div id="chatLog"></div>
+      <div class="chatInputRow">
+        <input type="text" id="chatInput" maxlength="140" placeholder="digite algo pro ECI.EXE...">
+        <button id="btnChatSend" class="small">ENVIAR</button>
+      </div>
+      <button id="btnChatClose" class="secondary small">FECHAR</button>
+    </div>
+  </div>
+
+  <!-- CAPTCHA FALSO (easter egg) -->
+  <div id="captchaModal" class="screen hidden">
+    <div class="dialogBox captchaBox">
+      <div class="dialogTitleBar"><span>VERIFICAÇÃO DE SEGURANÇA</span><span class="blink">●</span></div>
+      <p class="captchaText" id="captchaText">confirme que você não é um robô.</p>
+      <label class="captchaCheck"><input type="checkbox" id="captchaCheckbox"><span>não sou um robô</span></label>
+      <p class="captchaGlitchMsg hidden" id="captchaGlitchMsg"></p>
+    </div>
+  </div>
+
+  <!-- DIALOG (perguntas / "erros" da IA) -->
+  <div id="dialog" class="screen hidden">
+    <div class="dialogBox">
+      <div class="dialogTitleBar"><span id="dialogTitle">ERRO</span><span class="blink">●</span></div>
+      <p id="dialogText"></p>
+      <div id="dialogOptions"></div>
+    </div>
+  </div>
+
+  <!-- CRASH -->
+  <div id="crash" class="screen hidden">
+    <pre id="crashText"></pre>
+  </div>
+
+  <!-- END SCREEN -->
+  <div id="endScreen" class="screen hidden">
+    <h1 id="endTitle"></h1>
+    <p id="endText"></p>
+    <p id="endScore"></p>
+    <button id="btnRetry">RUN eci.exe --retry</button>
+  </div>
+
+  <div id="flash"></div>
+</div>
+
+<script src="ai.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
